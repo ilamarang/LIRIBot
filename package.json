@@ -1,0 +1,29 @@
+{
+  "name": "litibot",
+  "version": "1.0.0",
+  "description": "A cool app to get started with Node and NPM",
+  "main": "liri.js",
+  "scripts": {
+    "test": "node liri.js my-tweets"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilamarang/LIRIBot.git"
+  },
+  "keywords": [
+    "node",
+    "tweets",
+    "liri",
+    "bot",
+    "coolApp"
+  ],
+  "author": "Ilamaran Gurunathan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilamarang/LIRIBot/issues"
+  },
+  "homepage": "https://github.com/ilamarang/LIRIBot#readme",
+  "dependencies": {
+    "twitter": "^1.7.0"
+  }
+}
