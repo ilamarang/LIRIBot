@@ -4,6 +4,7 @@ var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var request = require("request");
 var lineReader = require("line-reader");
+var fs = require("fs");
 
 //Get Twitter Keys
 var client = new Twitter({
@@ -19,6 +20,14 @@ var spotify = new Spotify({
     id: keys.spotifyKeys.client_id,
     secret: keys.spotifyKeys.client_secret
 });
+
+function logWriter(data) {
+  fs.writeFile('log.txt', data,  {'flag':'a'},  function(err) {
+    if (err) {
+        return console.error(err);
+    }
+});
+}
 
 function spotifySong(trackName) {
     spotify.search({
@@ -54,6 +63,7 @@ function fetchTweets() {
         })
 
         console.log("Closing Tweets!")
+
     });
 
 }
@@ -82,9 +92,12 @@ function launchApp(instruction, data) {
             break;
          default:
               console.log("Invalid attempt");
+              logWriter("Invalid Attempt");
     }
 
 }
+
+
 
 function getRandomSelection(dataArray) {
     console.log(dataArray.length);
@@ -97,7 +110,7 @@ function getRandomSelection(dataArray) {
 
 }
 //Program starter function
-if
+
 launchApp(process.argv[2],process.argv[3]);
 
 
