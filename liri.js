@@ -59,7 +59,7 @@ function fetchTweets() {
     }, function(error, tweets, response) {
         console.log("Here is my Tweets!")
         tweets.statuses.forEach(function(tweet, index) {
-            console.log((index + 1) + ") " + tweet.text);
+            
         })
 
         console.log("Closing Tweets!")
@@ -79,6 +79,7 @@ function convertRandomTextToArray() {
   });
 }
 
+//Determine the function to call based on the input provided by the user
 function launchApp(instruction, data) {
     switch (instruction) {
         case "my-tweets":
@@ -105,7 +106,6 @@ function getRandomSelection(dataArray) {
     var randomNumber = Math.floor(Math.random() * dataArray.length)+1;
     var randomInstruction = dataArray[randomNumber-1].split(",");
 
-    console.log(randomInstruction[0] + "  " + randomInstruction[1]);
     launchApp(randomInstruction[0], randomInstruction[1]);
 
 }
