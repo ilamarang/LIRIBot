@@ -3,8 +3,22 @@ var keys = require("./keys");
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var request = require("request");
-//var fs = require("fs");
-var lineReader = require('line-reader');
+var lineReader = require("line-reader");
+
+//Get Twitter Keys
+var client = new Twitter({
+    consumer_key: keys.twitterKeys.consumer_key,
+    consumer_secret: keys.twitterKeys.consumer_secret,
+    access_token_key: keys.twitterKeys.access_token_key,
+    access_token_secret: keys.twitterKeys.access_token_secret
+});
+
+//Get Spotify Keys
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify({
+    id: keys.spotifyKeys.client_id,
+    secret: keys.spotifyKeys.client_secret
+});
 
 function spotifySong(trackName) {
     spotify.search({
@@ -15,29 +29,20 @@ function spotifySong(trackName) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-
         console.log("######## Hey - Here is your search results for Spotify ###########################\n");
-
         var songReturned = data.tracks.items[0];
-
-        //console.log(JSON.stringify(data.tracks.items[0]));
-
         songReturned.album.artists.forEach(function(artist, index) {
-            console.log("Artist(s): \n" + (index + 1) + ") " + artist.name)
-
+        console.log("Artist(s): \n" + (index + 1) + ") " + artist.name)
         })
 
         console.log("Album Name: " + songReturned.album.name);
-
         console.log("Song Name: " + songReturned.name);
-
         console.log("Preview URL: " + songReturned.preview_url);
-
         console.log("\n######## Done with Spotify #########################################################");
 
     })
 };
-
+//Function to get Tweets using Twitter Module
 function fetchTweets() {
     client.get('search/tweets', {
         q: 'NodePianoMan',
@@ -75,12 +80,11 @@ function launchApp(instruction, data) {
         case "do-what-it-says":
             convertRandomTextToArray();
             break;
-
+         default:
+              console.log("Invalid attempt");
     }
 
 }
-
-
 
 function getRandomSelection(dataArray) {
     console.log(dataArray.length);
@@ -92,45 +96,21 @@ function getRandomSelection(dataArray) {
     launchApp(randomInstruction[0], randomInstruction[1]);
 
 }
-
-
-var client = new Twitter({
-    consumer_key: keys.twitterKeys.consumer_key,
-    consumer_secret: keys.twitterKeys.consumer_secret,
-    access_token_key: keys.twitterKeys.access_token_key,
-    access_token_secret: keys.twitterKeys.access_token_secret
-});
-
-var Spotify = require('node-spotify-api');
-var spotify = new Spotify({
-    id: keys.spotifyKeys.client_id,
-    secret: keys.spotifyKeys.client_secret
-});
-
+//Program starter function
+if
 launchApp(process.argv[2],process.argv[3]);
-
-
 
 
 /*
 
-if (process.argv[2] == "my-tweets") {
 
 
-} else if (process.argv[2] == "movie-this") {
+
+else if (process.argv[2] == "movie-this") {
     console.log("Hello Movie");
     request('http://www.omdbapi.com/?i=tt3896198&apikey=87c66fec', function(error, response, body) {
         console.log('error:', error); // Print the error if one occurred
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         console.log('body:', body); // Print the HTML for the Google homepage.
     });
-} else if (process.argv[2] == "do-what-it-says") {
-    var dataArray = [];
-    lineReader.eachLine("./random.txt", function(line, last) {
-
-        dataArray.push(line);
-        if (last) {
-            getRandomSelection(dataArray);
-        }
-    });
-*/
+} */
