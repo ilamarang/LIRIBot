@@ -3,7 +3,8 @@ var keys = require("./keys");
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var request = require("request");
-var fs = require("fs");
+//var fs = require("fs");
+var lineReader = require('line-reader');
 
 function spotifySong (trackName) {
 
@@ -33,6 +34,10 @@ console.log("\n######## Done with Spotify ######################################
 
 })
 };
+
+function getRandomSelection(dataArray) {
+console.log(dataArray.length);
+}
 
 
 var client = new Twitter({
@@ -70,11 +75,14 @@ request('http://www.omdbapi.com/?i=tt3896198&apikey=87c66fec', function (error, 
   console.log('body:', body); // Print the HTML for the Google homepage.
 });
 } else if(process.argv[2]=="do-what-it-says") {
-  var lineReader = require('readline').createInterface({
-  input: require('fs').createReadStream('./random.txt')
+  var dataArray = [];
+  lineReader.eachLine("./random.txt", function(line, last) {
+
+  dataArray.push(line);
+  if(last){
+        getRandomSelection(dataArray);
+  }
 });
 
-lineReader.on('line', function (line) {
-  console.log(line);
-});
+
 }
