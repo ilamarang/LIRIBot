@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ilamarang/LIRIBot#readme",
   "dependencies": {
+    "node-spotify-api": "^1.0.5",
     "twitter": "^1.7.0"
   }
 }

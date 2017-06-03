@@ -6,3 +6,8 @@ exports.twitterKeys = {
   access_token_key: '870664426030018560-ql2xloBN7fMasufL3gNOWCv9ZRN1CRB',
   access_token_secret: 'ScGDmQr6SnzbzkZZDtgnBoKKSMCxXO8IGGkYfPOAjXF4o',
 }
+
+exports.spotifyKeys = {
+client_id:'6a439f16732e480ea921638f2aa4b7f6',
+client_secret:'41b9ab1de8254848b2ebbbf9d85dae4a'
+}
