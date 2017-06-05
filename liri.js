@@ -22,11 +22,12 @@ var spotify = new Spotify({
 });
 
 function logWriter(data) {
-  fs.writeFile('log.txt', data,  {'flag':'a'},  function(err) {
+  fs.writeFile('log.txt', data + '\n',  {'flag':'a'},  function(err) {
     if (err) {
         return console.error(err);
     }
 });
+console.log(data);
 }
 
 function spotifySong(trackName) {
@@ -38,16 +39,17 @@ function spotifySong(trackName) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        console.log("######## Hey - Here is your search results for Spotify ###########################\n");
+
+        logWriter("######## Hey - Here is your search results for Spotify ###########################");
         var songReturned = data.tracks.items[0];
         songReturned.album.artists.forEach(function(artist, index) {
-        console.log("Artist(s): \n" + (index + 1) + ") " + artist.name)
+        logWriter("Artist(s): \n" + (index + 1) + ") " + artist.name);
         })
 
-        console.log("Album Name: " + songReturned.album.name);
-        console.log("Song Name: " + songReturned.name);
-        console.log("Preview URL: " + songReturned.preview_url);
-        console.log("\n######## Done with Spotify #########################################################");
+        logWriter("Album Name: " + songReturned.album.name);
+        logWriter("Song Name: " + songReturned.name);
+        logWriter("Preview URL: " + songReturned.preview_url);
+        logWriter("######## Done with Spotify #########################################################");
 
     })
 };
@@ -57,16 +59,43 @@ function fetchTweets() {
         q: 'NodePianoMan',
         count: 20
     }, function(error, tweets, response) {
-        console.log("Here is my Tweets!")
+
+        logWriter("Here is my Tweets!");
         tweets.statuses.forEach(function(tweet, index) {
-            
+            //console.log((index + 1) + ") " + tweet.text);
+            logWriter((index + 1) + ") " + tweet.text);
         })
 
-        console.log("Closing Tweets!")
-
+        logWriter("Closing Tweets!");
     });
 
 }
+function findMovie(data) {
+  request('http://www.omdbapi.com/?t=' + data + '&apikey=40e9cece&tomatoes=true', function(error, response, body) {
+
+      if(error)
+      {
+          console.log('error:', error);
+      } else {
+          var movieObject = JSON.parse(body);
+          console.log("####################################################################################");
+          console.log("Your Movie Information is displayed here");
+          console.log("Title: " +movieObject.Title);
+          console.log("Year: " +movieObject.Year);
+          console.log("Rating: " +movieObject.imdbRating);
+          console.log("Country: " +movieObject.Country);
+          console.log("Language: " +movieObject.Language);
+          console.log("Plot: " +movieObject.Plot);
+          console.log("Actors: " +movieObject.Actors);
+          console.log("Rotten Tomatoes URL: " +movieObject.tomatoURL);
+          console.log("####################################################################################");
+
+      }
+
+
+  });
+}
+
 
 function convertRandomTextToArray() {
   var dataArray = [];
@@ -79,7 +108,7 @@ function convertRandomTextToArray() {
   });
 }
 
-//Determine the function to call based on the input provided by the user
+//Determine the function to call based on the input
 function launchApp(instruction, data) {
     switch (instruction) {
         case "my-tweets":
@@ -88,12 +117,14 @@ function launchApp(instruction, data) {
         case "spotify-this-song":
             spotifySong(data);
             break;
+        case "movie-this":
+            findMovie(data);
+            break;
         case "do-what-it-says":
             convertRandomTextToArray();
             break;
          default:
-              console.log("Invalid attempt");
-              logWriter("Invalid Attempt");
+            logWriter("Invalid Attempt");
     }
 
 }
@@ -101,29 +132,15 @@ function launchApp(instruction, data) {
 
 
 function getRandomSelection(dataArray) {
-    console.log(dataArray.length);
+    //console.log(dataArray.length);
 
     var randomNumber = Math.floor(Math.random() * dataArray.length)+1;
     var randomInstruction = dataArray[randomNumber-1].split(",");
 
+    //console.log(randomInstruction[0] + "  " + randomInstruction[1]);
     launchApp(randomInstruction[0], randomInstruction[1]);
 
 }
-//Program starter function
+//Launch the main function
 
 launchApp(process.argv[2],process.argv[3]);
-
-
-/*
-
-
-
-
-else if (process.argv[2] == "movie-this") {
-    console.log("Hello Movie");
-    request('http://www.omdbapi.com/?i=tt3896198&apikey=87c66fec', function(error, response, body) {
-        console.log('error:', error); // Print the error if one occurred
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-        console.log('body:', body); // Print the HTML for the Google homepage.
-    });
-} */

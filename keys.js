@@ -12,5 +12,5 @@ client_secret:'41b9ab1de8254848b2ebbbf9d85dae4a'
 }
 
 exports.omdbKeys = {
-  apikey:'87c66fec'
+  apikey:'40e9cece'
 }
