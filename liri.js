@@ -22,12 +22,14 @@ var spotify = new Spotify({
 });
 
 function logWriter(data) {
-  fs.writeFile('log.txt', data + '\n',  {'flag':'a'},  function(err) {
-    if (err) {
-        return console.error(err);
-    }
-});
-console.log(data);
+    fs.writeFile('log.txt', data + '\n', {
+        'flag': 'a'
+    }, function(err) {
+        if (err) {
+            return console.error(err);
+        }
+    });
+    console.log(data);
 }
 
 function spotifySong(trackName) {
@@ -43,7 +45,7 @@ function spotifySong(trackName) {
         logWriter("######## Hey - Here is your search results for Spotify ###########################");
         var songReturned = data.tracks.items[0];
         songReturned.album.artists.forEach(function(artist, index) {
-        logWriter("Artist(s): \n" + (index + 1) + ") " + artist.name);
+            logWriter("Artist(s): \n" + (index + 1) + ") " + artist.name);
         })
 
         logWriter("Album Name: " + songReturned.album.name);
@@ -70,42 +72,42 @@ function fetchTweets() {
     });
 
 }
+
 function findMovie(data) {
-  request('http://www.omdbapi.com/?t=' + data + '&apikey=40e9cece&tomatoes=true', function(error, response, body) {
+    request('http://www.omdbapi.com/?t=' + data + '&apikey=40e9cece&tomatoes=true', function(error, response, body) {
 
-      if(error)
-      {
-          console.log('error:', error);
-      } else {
-          var movieObject = JSON.parse(body);
-          console.log("####################################################################################");
-          console.log("Your Movie Information is displayed here");
-          console.log("Title: " +movieObject.Title);
-          console.log("Year: " +movieObject.Year);
-          console.log("Rating: " +movieObject.imdbRating);
-          console.log("Country: " +movieObject.Country);
-          console.log("Language: " +movieObject.Language);
-          console.log("Plot: " +movieObject.Plot);
-          console.log("Actors: " +movieObject.Actors);
-          console.log("Rotten Tomatoes URL: " +movieObject.tomatoURL);
-          console.log("####################################################################################");
+        if (error) {
+            console.log('error:', error);
+        } else {
+            var movieObject = JSON.parse(body);
+            console.log("####################################################################################");
+            console.log("Your Movie Information is displayed here");
+            console.log("Title: " + movieObject.Title);
+            console.log("Year: " + movieObject.Year);
+            console.log("Rating: " + movieObject.imdbRating);
+            console.log("Country: " + movieObject.Country);
+            console.log("Language: " + movieObject.Language);
+            console.log("Plot: " + movieObject.Plot);
+            console.log("Actors: " + movieObject.Actors);
+            console.log("Rotten Tomatoes URL: " + movieObject.tomatoURL);
+            console.log("####################################################################################");
 
-      }
+        }
 
 
-  });
+    });
 }
 
 
 function convertRandomTextToArray() {
-  var dataArray = [];
-  lineReader.eachLine("./random.txt", function(line, last) {
+    var dataArray = [];
+    lineReader.eachLine("./random.txt", function(line, last) {
 
-      dataArray.push(line);
-      if (last) {
-          getRandomSelection(dataArray);
-      }
-  });
+        dataArray.push(line);
+        if (last) {
+            getRandomSelection(dataArray);
+        }
+    });
 }
 
 //Determine the function to call based on the input
@@ -115,27 +117,31 @@ function launchApp(instruction, data) {
             fetchTweets();
             break;
         case "spotify-this-song":
+            if (data === undefined) {
+                data = "The Sign Ace of Base";
+            }
             spotifySong(data);
             break;
         case "movie-this":
+            if (data === undefined) {
+                data = "Mr. Nobody";
+            }
             findMovie(data);
             break;
         case "do-what-it-says":
             convertRandomTextToArray();
             break;
-         default:
+        default:
             logWriter("Invalid Attempt");
     }
 
 }
 
-
-
 function getRandomSelection(dataArray) {
     //console.log(dataArray.length);
 
-    var randomNumber = Math.floor(Math.random() * dataArray.length)+1;
-    var randomInstruction = dataArray[randomNumber-1].split(",");
+    var randomNumber = Math.floor(Math.random() * dataArray.length) + 1;
+    var randomInstruction = dataArray[randomNumber - 1].split(",");
 
     //console.log(randomInstruction[0] + "  " + randomInstruction[1]);
     launchApp(randomInstruction[0], randomInstruction[1]);
@@ -143,4 +149,4 @@ function getRandomSelection(dataArray) {
 }
 //Launch the main function
 
-launchApp(process.argv[2],process.argv[3]);
+launchApp(process.argv[2], process.argv[3]);
